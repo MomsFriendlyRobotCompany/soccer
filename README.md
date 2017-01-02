@@ -1,3 +1,10 @@
+# Soccer
+
+![](pics/robot.JPG)
+
+My robot has seen better days and is currently torn appart. However, I plan to rebuild
+it.
+
 ## Hardware
 
 ### Raspberry Pi
@@ -55,10 +62,6 @@ Here is a parts list of **key components** that I am using. I am not listing wir
 | Micro SD (32 GB) | [Walmart](http://www.walmart.com) | 1 | $12 | $12 | |
 | Logitech C270 | [Walmart](http://www.walmart.com) | 1 | $30 | $30 | Connected via USB, also use the on board microphone |
 
-## Future
-
-* Want a current/voltage sensor so I can track my battery power consumption
-* Need more IR sensors to ensure the robot doesn't drive off a cliff (i.e., table edge, stairs, etc)
 
 ## SSH Login Art
 
