@@ -2,17 +2,12 @@
 
 from __future__ import division
 from __future__ import print_function
-
-# since i do a lot of dev on Apple, this creates a fake interface
 import platform
-if platform.system().lower() == 'linux':
-	# pip install Adafruit_MCP230XX
-	from Adafruit_MCP230XX import Adafruit_MCP230XX as MCP230XX
-	# import RPi.GPIO as GPIO  # PWM
-	from RPi.GPIO import PWM, setmode, setup, cleanup, BCM, OUT
+import os
 
-	# print('RPi detected:', GPIO.RPI_INFO['P1_REVISION'])
-	# print('GPIO Version:', GPIO.VERSION)
+if platform.system().lower() == 'linux' and 'CI' not in os.environ:
+	from Adafruit_MCP230XX import Adafruit_MCP230XX as MCP230XX
+	from RPi.GPIO import PWM, setmode, setup, cleanup, BCM, OUT
 
 else:
 	class MCP230XX(object):  # mux
