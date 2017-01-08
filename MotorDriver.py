@@ -7,27 +7,10 @@ import os
 
 if platform.system().lower() == 'linux' and 'CI' not in os.environ:
 	from Adafruit_MCP230XX import Adafruit_MCP230XX as MCP230XX
-	from RPi.GPIO import PWM, setmode, setup, cleanup, BCM, OUT
+	import RPi.GPIO as GPIO
 
 else:
-	class MCP230XX(object):  # mux
-		def __init__(self, a, b, c): pass
-		def write8(self, a): print('mux wrote:', a)
-		def config(self, a, b): pass
-
-	class PWM(object):  # motors
-		def __init__(self, a, b): pass
-		def start(self, a): pass
-		def stop(self): pass
-		def ChangeDutyCycle(self, a): print('ChangeDutyCycle', a)
-
-	# class GPIO:  # this shit isn't working!!!!
-	# I don't like this solution!!!
-	BCM = 11
-	OUT = 0
-	def setmode(a): pass
-	def setup(a, b): pass
-	def cleanup(): pass
+	from fakeHW import MCP230XX, PWM, GPIO
 
 
 class MotorDriver(object):
@@ -45,14 +28,14 @@ class MotorDriver(object):
 		self.mux = MCP230XX(0x20, 16, 1)
 
 		for pin in range(0, 15):
-			self.mux.config(pin, OUT)
+			self.mux.config(pin, GPIO.OUT)
 
 		# this can be:
 		# BOARD -> Board numbering scheme. The pin numbers follow the pin numbers on header P1.
 		# BCM -> Broadcom chip-specific pin numbers.
-# 		GPIO.setmode(GPIO.BCM)
-		setmode(BCM)  # Pi cover uses BCM pin numbers, GPIO.BCM = 11
-		setup([pwm0, pwm1, pwm2, pwm3], OUT)  # GPIO.OUT = 0
+		GPIO.setmode(GPIO.BCM)  # Pi cover uses BCM pin numbers, GPIO.BCM = 11
+		# setmode(BCM)  # Pi cover uses BCM pin numbers, GPIO.BCM = 11
+		GPIO.setup([pwm0, pwm1, pwm2, pwm3], GPIO.OUT)  # GPIO.OUT = 0
 
 		freq = 100.0  # Hz
 		self.motor0 = PWM(pwm0, freq)
@@ -72,7 +55,7 @@ class MotorDriver(object):
 		self.motor1.stop()
 		self.motor2.stop()
 		self.motor3.stop()
-		cleanup()
+		GPIO.cleanup()
 
 	def clamp(self, x):
 		"""
@@ -126,24 +109,24 @@ class MotorDriver(object):
 		self.setMotors(stop, stop, stop, stop)
 
 
-def test():
-	import time
-	md = MotorDriver(4, 15, 14, 18)
+# def test():
+# 	import time
+# 	md = MotorDriver(4, 15, 14, 18)
+#
+# 	# duty cycle 0.0 - 100.0
+# 	go = {'dir': MotorDriver.FORWARD, 'duty': 10}
+# 	rev = {'dir': MotorDriver.REVERSE, 'duty': 25}
+# 	stp = {'dir': MotorDriver.REVERSE, 'duty': 0}
+#
+# 	md.setMotors(go, go, go, go)
+# 	time.sleep(10)
+# 	md.setMotors(rev, rev, rev, rev)
+# 	time.sleep(10)
+# 	md.setMotors(go, stp, go, stp)
+# 	time.sleep(10)
+# 	md.setMotors(stp, rev, stp, rev)
+# 	time.sleep(10)
+# 	md.allStop()
 
-	# duty cycle 0.0 - 100.0
-	go = {'dir': MotorDriver.FORWARD, 'duty': 10}
-	rev = {'dir': MotorDriver.REVERSE, 'duty': 25}
-	stp = {'dir': MotorDriver.REVERSE, 'duty': 0}
-
-	md.setMotors(go, go, go, go)
-	time.sleep(10)
-	md.setMotors(rev, rev, rev, rev)
-	time.sleep(10)
-	md.setMotors(go, stp, go, stp)
-	time.sleep(10)
-	md.setMotors(stp, rev, stp, rev)
-	time.sleep(10)
-	md.allStop()
-
-if __name__ == '__main__':
-	test()
+# if __name__ == '__main__':
+# 	test()
