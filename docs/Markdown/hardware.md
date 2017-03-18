@@ -14,3 +14,13 @@ Here is a parts list of **key components** that I am using. I am not listing wir
 | Sharp IR | [Pololu](https://www.pololu.com) | 8 | $10 | $80 | Range 10-80 cm |
 | PS4 Controller   | [Walmart](http://www.walmart.com) | 1 | $54 | $54 | |
 | Micro SD (32 GB) | [Walmart](http://www.walmart.com) | 1 | $12 | $12 | |
+
+
+---
+
+<p align="center">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img alt="Creative Commons License"  src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+	</a>
+	<br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</p>
