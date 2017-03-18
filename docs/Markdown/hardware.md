@@ -1,3 +1,33 @@
+# Raspberry Pi
+
+![RPI 3](https://www.raspberrypi.org/wp-content/uploads/2016/02/Pi_3_Model_B.png)
+
+I am currently using a 1.2 GHz quad core [RPi 3](https://www.adafruit.com/products/3055) (ARMv8) as the main board running the lite version of Raspbian. It has on-board:
+
+* 802.11n Wifi
+* Bluetooth 4.1 BLE
+
+## Camera Interface (CSI)
+
+* [PiCamera](https://www.adafruit.com/products/3099) is used for video odometry (currently have version 1, 5 Mpixels but moving to 8 Mpixels)
+
+## I2C
+
+The following is on the I2C bus:
+
+* [MCP23017 16b I/O Expander](https://www.adafruit.com/products/732): 0x20
+* TBD - AHRS Compass ...need to get one
+
+# Sensors
+
+* [Sharp GP2Y0A21YK0F IR](https://www.adafruit.com/products/164) sensors give 10-80 cm (3.9-31.5 in)
+* Pololu [ACS711LC Current sensor](https://www.pololu.com/product/2198) measures up to +/-25 A and up to 30 V
+
+# Motion
+
+* Pololu [TB6612FNG Dual Motor Driver](https://www.pololu.com/product/713) provides 4.5-13.5V at 1A continuous (3A peak) current.
+* Motors currently are 12V 130 rpm gear motors
+
 # Parts
 
 Here is a parts list of **key components** that I am using. I am not listing wires, bread boards, cables, etc. Also note, I have rounded up the costs (i.e., $4.95 => $5).
