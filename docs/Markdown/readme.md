@@ -4,6 +4,8 @@
 - [Hardware](./hardware.md)
 - [PyGecko](./pygecko.md)
 
+![](./pics/soccer_parts.png)
+
 ---
 
 <p align="center">
