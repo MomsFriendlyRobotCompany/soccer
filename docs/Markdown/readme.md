@@ -3,6 +3,7 @@
 - [Software](./software.md)
 - [Hardware](./hardware.md)
 - [PyGecko](./pygecko.md)
+- [History](./history.md)
 
 ![](./pics/soccer_parts.png)
 

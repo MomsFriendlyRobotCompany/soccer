@@ -6,8 +6,6 @@ My robot has seen better days and is currently torn appart. However, I plan to r
 it. Right now I am re-working it and put it into a like "bread board" configuration so
 I can get everything setup again correctly.
 
-![](pics/breadboard.JPG)
-
 ## Documentation
 
 - [Markdown docs](./docs/Markdown)

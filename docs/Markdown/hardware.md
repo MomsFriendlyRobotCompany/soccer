@@ -1,3 +1,21 @@
+# Body
+
+My robot is broken up into 2 levels. The top level (seen on the left) which
+will have the RPi, camera, and battery (easier to change/charge). The bottom
+level will have motor drivers, power system, IR sensors, ADC, and compass.
+
+![](./pics/both_levels.JPG)
+
+A closer look at the bottom level is below:
+
+![](./pics/level_1.JPG)
+
+The hubs and the wheels are joined together by some #4-40 x 1 inch bolts. I had
+to drill a couple of holes through the center of the wheel so the bolts could
+go through.
+
+![](./pics/wheels.JPG)
+
 # Raspberry Pi
 
 ![RPI 3](https://www.raspberrypi.org/wp-content/uploads/2016/02/Pi_3_Model_B.png)
