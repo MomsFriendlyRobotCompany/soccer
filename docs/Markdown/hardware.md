@@ -18,6 +18,34 @@ The following is on the I2C bus:
 * [MCP23017 16b I/O Expander](https://www.adafruit.com/products/732): 0x20
 * TBD - AHRS Compass ...need to get one
 
+## GPIO
+
+The RPi has both Pi pin numbers and BCM pin numbers assigned to its GPIO.
+
+|BCM| Use  | Pi | Pi | Use |BCM|
+|---|------|----|----|-----|---|
+|   | 3v3  |  1 |  2 | 5v  |   |
+| 2 | SDA  |  3 |  4 | 5v  |   |
+| 3 | SCL  |  5 |  6 | GND |   |
+| 4 | PWM0 |  7 |  8 | TX  | 14|
+|   | GND  |  9 | 10 | RX  | 15|
+| 17| PWM1 | 11 | 12 |     | 18|
+| 27| PWM2 | 13 | 14 | GND |   |
+| 22| PWM3 | 15 | 16 |     | 23|
+|   | 3v3  | 17 | 18 |     | 24|
+| 10| MOSI | 19 | 20 | GND |   |
+|  9| MISO | 21 | 22 |     | 25|
+| 11| SCLK | 23 | 24 | CE0 |  8|
+|   | GND  | 25 | 26 | CE1 |  7|
+|  0| A0   | 27 | 28 |     |  1|
+|  5| B0   | 29 | 30 | GND |   |
+|  6| A1   | 31 | 32 |     | 12|
+| 13| B1   | 33 | 34 | GND |   |
+| 19|      | 35 | 36 |     | 16|
+| 26|      | 37 | 38 |     | 20|
+|   | GND  | 39 | 40 |     | 21|
+
+
 # Sensors
 
 * [Sharp GP2Y0A21YK0F IR](https://www.adafruit.com/products/164) sensors give 10-80 cm (3.9-31.5 in)
