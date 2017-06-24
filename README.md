@@ -10,6 +10,16 @@ I can get everything setup again correctly.
 
 ![](pics/soccer-power-data.png)
 
+- main battery is a 12V NiMH with a Pololu 5v, 2.6A buck converter supplying power to both RPi and the IR sensors. 
+- the Pi is used to provide 3.3V to the IMU. 
+- a MCP3208 ADC (8 channel, 12b) is used to read the IR sensors.
+- 4 geared DC brushed motors (138 rmp @ 12V) drive the robot
+- Omni wheels from www.kornylak.com allow non-holonomic movement
+- Raspberry Pi Camera
+- NXP IMU from Adafruit
+
+### Other Docs
+
 - [Markdown docs](./docs/Markdown)
 - [Jupyter notebooks](./docs/ipython)
 
