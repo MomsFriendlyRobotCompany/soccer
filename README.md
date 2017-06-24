@@ -8,6 +8,8 @@ I can get everything setup again correctly.
 
 ## Documentation
 
+![](pics/soccer-power-data.png)
+
 - [Markdown docs](./docs/Markdown)
 - [Jupyter notebooks](./docs/ipython)
 
