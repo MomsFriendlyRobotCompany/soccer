@@ -8,27 +8,42 @@
 from __future__ import division
 from __future__ import print_function
 import time
-import multiprocessing as mp
+# import multiprocessing as mp
 # import logging
-import MotorDriver as md
-from pygecko import ZmqClass as zmq
-from pygecko import Messages as Msg
-from sensors import AnalogIR, DigitalIR
+from Hardware import AnalogIR, DigitalIR
+# from pygecko import Messages as Msg
+import Hardware as md
+import os
+import platform
+
+try:
+	if 'CI' in os.environ or platform.system() != 'Linux':
+		raise ImportError()
+
+	from nxp_imu import IMU, AHRS
+
+except ImportError:
+	from fake_rpi.nxp_imu import IMU, AHRS
 
 
-class SoccerHardware(mp.Process):
+class SoccerRobot(object):
 	"""
-	RobotHardwareServer handles incoming commands streamed from somewhere else.
-	in: commands/etc
-	out: sensor readings
+	This is the low level robot hardware driver:
+	- motor driver x2
+	- ADC (8 ch): IR
 	"""
-	def __init__(self):
-		mp.Process.__init__(self)
+	def __init__(self, md_pins):
+		# mp.Process.__init__(self)
 		# logging.basicConfig(level=logging.INFO)
 		# self.logger = logging.getLogger('robot')
-		self.md = md.MotorDriver(17, 18, 22, 23)
-		self.ir = DigitalIR([1, 2, 3, 4])
-		self.air = AnalogIR()
+		if len(md_pins) != 8:
+			raise Exception('Wrong number of pins for motor driver!')
+
+		self.md = md.MotorDriver(*md_pins)
+		self.digital_ir = DigitalIR([1, 2, 3, 4])
+		self.analog_ir = AnalogIR()
+		self.imu = IMU()
+		self.ahrs = AHRS(True)
 
 	def __del__(self):
 		self.md.allStop()
@@ -44,28 +59,15 @@ class SoccerHardware(mp.Process):
 		m0 = m1 = m2 = m3 = (0, 0)
 		return m0, m1, m2, m3
 
-	def run(self):
-		cmd_sub = zmq.Sub(topics=['cmds'], connect_to=('0.0.0.0', 9000))
-		telemetry_pub = zmq.Pub(bind_to=('0.0.0.0', 9010))
+	def loop_once(self):
 
 		while True:
-			time.sleep(0.05)  # 0.5 => 20Hz
+			# get sensors
+			self.analog_ir.read()
+			ret = self.imu.get()
+			self.accel = ret[:3]
+			self.mag = ret[3:6]
+			self.gyro = ret[6:]
+			self.orientation = self.ahrs.getOrientation(self.accel, self.mag)
 
-			# get info
-			topic, msg = cmd_sub.recv()
-			if msg:
-				print('msg:', topic, msg)
-
-				if topic == 'quit':
-					self.shutdown()
-					break
-				elif topic == 'cmd':
-					# need logic for command
-					cmd = self.makeCmd(msg)
-					self.md.setMotors(*cmd)
-
-			# get IR drop sensors
-			ir_info = self.ir.read()
-			msg = Msg.Range()
-			msg.range = ir_info
-			telemetry_pub.pub('ir', msg)
+			time.sleep(0.05)  # 0.05 => 20Hz

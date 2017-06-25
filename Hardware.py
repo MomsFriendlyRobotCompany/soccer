@@ -2,17 +2,61 @@
 
 from __future__ import division
 from __future__ import print_function
-# import platform
-# import os
-# if platform.system().lower() == 'linux' and 'CI' not in os.environ:
-# 	from Adafruit_MCP230XX import Adafruit_MCP230XX as MCP230XX
-# 	import RPi.GPIO as GPIO
-#
-# else:
-# 	from fakeHW import MCP230XX, PWM, GPIO
+import platform
+import os
+from mcp3208 import MCP3208
 
-# from fakeHW import MCP230XX
-from fakeHW import GPIO, PWM
+# if platform.system().lower() == 'linux' and 'CI' not in os.environ:
+try:
+	if 'CI' in os.environ or platform.system() != 'Linux':
+		raise ImportError()
+	# from Adafruit_MCP230XX import Adafruit_MCP230XX as MCP230XX
+	import RPi.GPIO as GPIO
+	from RPi.GPIO import PWM
+
+except ImportError:
+	from fake_rpi import GPIO
+	from fake_rpi.PWM import PWM
+
+
+class AnalogIR(object):
+	"""
+	Read IR sensors on adc inputs
+	"""
+	def __init__(self):
+		self.adc = MCP3208()
+		self.ir = {}
+		for key in ['front', 'right', 'back', 'left']:
+			self.ir[key] = 0
+
+	def read(self):
+		for pin, key in enumerate(self.ir):
+			# ir.append(self.adc.read(pin))
+			# print('read >>', pin, key)
+			self.ir[key] = self.adc.read(pin)
+
+		return self.ir
+
+
+class DigitalIR(object):
+	"""
+	Read IR sensors on digital inputs
+
+	Pololu sds01a 0-5 cm pwr 3V output max 3V
+	Sharp xxx 0-15 cm pwr 5V output max 3V - digital gives 3 inch range
+	"""
+	def __init__(self, pins):
+		GPIO.setwarnings(False)
+		GPIO.setmode(GPIO.BCM)
+		self.pins = pins
+		GPIO.setup(self.pins, GPIO.IN)
+
+	def read(self):
+		ir = [0]*len(self.pins)
+		# for p in self.pins: ir.append(GPIO.input(p))
+		for pin in range(self.pins):
+			ir[pin] = self.adc.read(pin)
+		return ir
 
 
 class MotorDriver(object):
@@ -74,14 +118,13 @@ class MotorDriver(object):
 		self.motor3.stop()
 		GPIO.cleanup()
 
-	def clamp(self, x):
+	def clamp(self, x, minimum=0, maximum=100):
 		"""
 		Clamps a PWM from 0-100 and puts it into the right servo usec timing.
 		"""
-		minimum = 0
-		maximum = 100
-		if x == 0: return 0  # really stop motor
-		return max(minimum, min(x, maximum))
+		# minimum = 0
+		# maximum = 100
+		return 0 if x == 0 else max(minimum, min(x, maximum))
 
 	def setMotors(self, m0, m1, m2, m3):
 		"""
