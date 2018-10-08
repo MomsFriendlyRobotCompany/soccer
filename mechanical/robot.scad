@@ -1,5 +1,19 @@
 $fn=90;
 
+module M3(t){
+    dia = 3.5;
+    sdia = 8.5;  // counter sink dia
+    cylinder(3*t, d=dia, center=true);  // M3
+    translate([0,0,2]) cylinder(3*t, d=sdia, center=false);  // screw driver
+}
+
+module M2(t){
+    dia = 2.5;
+    sdia = 6;  // counter sink dia
+    cylinder(3*t, d=dia, center=true);  // M2
+    translate([0,0,2]) cylinder(3*t, d=sdia, center=false);  // screw driver
+}
+
 // DC motor
 module motor(){
     rotate([0,90,0]) {
@@ -30,7 +44,7 @@ module wheel(){
         cylinder(h=17, d=49, center=true);
         cylinder(h=20, d=7, center=true);
     }
-        
+
     for(a = [0:7]){
         rotate([a*45,0,0]) translate([0,22,0]) color("white") cylinder(h=12,d=9, center=true);
     }
@@ -67,17 +81,30 @@ module motor_plate(dia, draw=false){
 
     difference(){
         cylinder(h=3, d=dia);
+
+        // center
+        cylinder(h=9, d=dia/2, center=true);
+
+        // wheel cut outs
         translate([80,0,0]) cube([20,55,20], center=true);
         rotate([0,0,90]) translate([80,0,0]) cube([20,55,20], center=true);
         rotate([0,0,180]) translate([80,0,0]) cube([20,55,20], center=true);
         rotate([0,0,270]) translate([80,0,0]) cube([20,55,20], center=true);
+
+        // mounts
+        for(a=[0:3]){
+            rotate([180,0,0]) rotate([0,0,90*a+45]) translate([0.8*dia/2,0,-3]) M3(20);
+        }
     }
-    
+
+    /* for(a=[0:3]){
+        rotate([180,0,0]) rotate([0,0,90*a+45]) translate([0.8*dia/2,0,-3]) M3(20);
+    } */
+
     for(a=[0:3]){
         rotate([0,0,90*a]) translate([-57.5,-15,0]) motor_mnt();
-        rotate([0,0,90*a+45]) translate([0.8*dia/2,0,3]) ir_mnt();
+        // rotate([0,0,90*a+45]) translate([0.8*dia/2,0,3]) ir_mnt();
     }
 }
 
-motor_plate(200, true);
-
+motor_plate(200, false);
